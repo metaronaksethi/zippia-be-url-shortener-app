@@ -1,0 +1,26 @@
+{
+    "name": "zippia-test-project",
+    "version": "1.0.0",
+    "description": "convert long to short url",
+    "main": "index.js",
+    "scripts": {
+        "start": "nodemon index.js"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "body-parser": "^1.20.1",
+        "custom-env": "^2.0.1",
+        "express": "^4.17.1",
+        "mongoose": "^5.9.1",
+        "morgan": "^1.10.0",
+        "nanoid": "^3.3.4",
+        "path": "^0.12.7",
+        "swagger-ui-express": "^4.5.0",
+        "url-exists-nodejs": "^0.1.0",
+        "yamljs": "^0.3.0"
+    },
+    "devDependencies": {
+        "nodemon": "^2.0.2"
+    }
+}

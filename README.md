@@ -66,7 +66,7 @@ zippia-be-url-shortener-app/
 # Screenshot
 
 <p align="center">
-  <img src="https://github.com/metaronaksethi/zippia-be-url-shortener-app/blob/master/screenshot.png" width="90%" />
+  <img src="https://github.com/metaronaksethi/zippia-be-url-shortener-app/blob/main/zippia_swagger_screen.png" width="90%" />
 </p>
 
 # Introduction
@@ -144,6 +144,7 @@ $ npm start
 
 9. Navigate to `http://localhost:3000` in your browser to test it! or your configurable PORT
 
+10. Open http://localhost:3000/api/docs  for swagger document
 
 # Contribution
 

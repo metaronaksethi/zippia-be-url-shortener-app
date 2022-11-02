@@ -1,0 +1,164 @@
+openapi: "3.0.2"
+info:
+  version: 1.0.0
+  title: Zippia Test URL Shortner Project
+servers:
+  - url: http://localhost:7000/api
+tags:
+  - name: Url
+    description: Operations related to url conversion
+
+paths:
+  /create-short-url:
+    post:
+      summary: request short url
+      operationId: requestShortUrl
+      tags:
+        - Url
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              origUrl: 'http://www.google.com'
+            schema:
+              type: object
+              required:
+                - origUrl
+              properties:
+                origUrl:
+                  type: string
+                  description: Pass original url
+      responses:
+        200:
+          description: Message indicating short url genrate successfully
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+        400:
+          $ref: '#/components/responses/BadRequestError'
+
+  /get-short-url/{origUrl}:
+    get:
+      summary:  get short url
+      operationId: getShortUrl
+      tags:
+        - Url
+      parameters:
+        - name: origUrl
+          in: path
+          description: original url 
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: short url response
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          slug:
+                            type: string
+                          title:
+                            type: string
+                          description:
+                            type: string
+        400:
+          $ref: '#/components/responses/BadRequestError'
+
+  /get-long-url/{urlId}:
+    get:
+      summary:  get long url
+      operationId: getLongUrl
+      tags:
+        - Url
+      parameters:
+        - name: urlId
+          in: path
+          description: short url id  
+          required: true
+          schema:
+            type: string
+      responses:
+        200:
+          description: short url response
+          content:
+            application/json:
+              schema:
+                allOf:
+                  - $ref: '#/components/schemas/ApiResponse'
+                  - type: object
+                    properties:
+                      data:
+                        type: object
+                        properties:
+                          slug:
+                            type: string
+                          title:
+                            type: string
+                          description:
+                            type: string
+        400:
+          $ref: '#/components/responses/BadRequestError'
+
+components:
+  schemas:
+    ApiResponse:
+      required:
+        - success
+        - message
+        - meta
+      properties:
+        success:
+          type: boolean
+        message:
+          type: string
+        data: {}
+        meta:
+          type: object
+          properties:
+            version:
+              type: string
+            forceUpdate:
+              type: boolean
+            maintenance:
+              type: boolean
+            hasUpdate:
+              type: boolean
+
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+
+  responses:
+    BadRequestError:
+      description: Request fails validation or doesn't meet all conditions for request
+      content:
+        application/json:
+          schema:
+            example:
+              success: false
+              message: 'Validation failed'
+              data: ''
+            allOf:
+              - $ref: '#/components/schemas/ApiResponse'
+              - type: object
+                properties:
+                  data:
+                    type: object
+                    nullable: true
+    NotFoundError:
+      description: Requested resource was not found
+    UnauthorizedError:
+      description: Access token is missing or invalid
