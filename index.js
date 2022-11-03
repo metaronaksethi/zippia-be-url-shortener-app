@@ -74,11 +74,32 @@ app.use(function (req, res) {
 });
 
 const port = process.env.PORT || 3000;
-let server;
 const http = require('http');
-server = http.createServer(app);
 
+// clustring and server listening 
+const cluster = require('cluster');
+const numCPUs = require('os').cpus().length;
+
+if (cluster.isMaster) {
+ console.log(`Master ${process.pid} is running`);
+  
+ // Fork workers.
+ for (let i = 0; i < numCPUs; i++) {
+  cluster.fork();
+ }
+  
+ cluster.on('exit', (worker, code, signal) => {
+  console.log(`worker ${worker.process.pid} died`);
+ });
+  
+} else {
+  
+ // Workers can share any TCP connection
+ // In this case it is an HTTP server
+ let server;
+server = http.createServer(app);
 server.listen(port, async function () {
     // eslint-disable-next-line no-console
     console.info(`Server Started on port ${port}`);
 });
+}
